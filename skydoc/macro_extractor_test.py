@@ -363,37 +363,37 @@ class MacroExtractorTest(unittest.TestCase):
         """)
 
     expected = textwrap.dedent("""\
-rule {
-  name: "macro_with_outputs"
-  documentation: "Macro with output documentation."
-  attribute {
-    name: "name"
-    type: UNKNOWN
-    mandatory: true
-    documentation: "A unique name for this rule."
-  }
-  attribute {
-    name: "foo"
-    type: UNKNOWN
-    mandatory: true
-    documentation: "A test argument."
-  }
-  attribute {
-    name: "visibility"
-    type: UNKNOWN
-    mandatory: false
-    documentation: "The visibility of this rule."
-  }
-  output {
-    template: "%{name}.jar"
-    documentation: "A Java archive."
-  }
-  output {
-    template: "%{name}_deploy.jar"
-    documentation: "A Java archive suitable for deployment.\\n\\nOnly built if explicitly requested."
-  }
-  type: MACRO
-}
+        rule {
+          name: "macro_with_outputs"
+          documentation: "Macro with output documentation."
+          attribute {
+            name: "name"
+            type: UNKNOWN
+            mandatory: true
+            documentation: "A unique name for this rule."
+          }
+          attribute {
+            name: "foo"
+            type: UNKNOWN
+            mandatory: true
+            documentation: "A test argument."
+          }
+          attribute {
+            name: "visibility"
+            type: UNKNOWN
+            mandatory: false
+            documentation: "The visibility of this rule."
+          }
+          output {
+            template: "%{name}.jar"
+            documentation: "A Java archive."
+          }
+          output {
+            template: "%{name}_deploy.jar"
+            documentation: "A Java archive suitable for deployment.\\n\\nOnly built if explicitly requested."
+          }
+          type: MACRO
+        }
         """)
 
     self.check_protos(src, expected)

@@ -228,24 +228,31 @@ class HtmlWriter(object):
 
 def main(argv):
   parser = OptionParser()
-  parser.add_option('--output_dir', default='', help='The directory to write the output generated documentation to if --zip=false')
-  parser.add_option('--output_file', default='', help='The output zip archive file to write if --zip=true.')
-  parser.add_option('--format', default='markdown', help='The output format. Possible values are markdown and html')
+  parser.add_option('--output_dir', default='',
+      help='The directory to write the output generated documentation to if --zip=false')
+  parser.add_option('--output_file', default='',
+      help='The output zip archive file to write if --zip=true.')
+  parser.add_option('--format', default='markdown',
+      help='The output format. Possible values are markdown and html')
   parser.add_option('--zip', action='store_true', default=True,
-    help='Whether to generate a ZIP arhive containing the output files. If '
-         '--zip is true, then skydoc will generate a zip file, skydoc.zip by '
-         'default or as specified by --output_file. If --zip is false, then '
-         'skydoc will generate documentation, either in Markdown or HTML as '
-         'specifed by --format, in the current directory or --output_dir if set.')
+      help='Whether to generate a ZIP arhive containing the output files. If '
+           '--zip is true, then skydoc will generate a zip file, skydoc.zip by '
+           'default or as specified by --output_file. If --zip is false, then '
+           'skydoc will generate documentation, either in Markdown or HTML as '
+           'specifed by --format, in the current directory or --output_dir if set.')
   parser.add_option('--strip_prefix',
-    help='The directory prefix to strip from all generated docs, which are '
-         'generated in subdirectories that match the package structure of the '
-         'input .bzl files. The prefix to strip must be common to all .bzl files; '
-         'otherwise, skydoc will raise an error.')
-  parser.add_option('--overview', action='store_true', help='Whether to generate an overview page')
-  parser.add_option('--overview_filename', default='index', help='The file name to use for the overview page.')
-  parser.add_option('--link_ext', default='html', help='The file extension used for links in the generated documentation')
-  parser.add_option('--site_root', default='', help='The site root to be prepended to all URLs in the generated documentation')
+      help='The directory prefix to strip from all generated docs, which are '
+           'generated in subdirectories that match the package structure of the '
+           'input .bzl files. The prefix to strip must be common to all .bzl files; '
+           'otherwise, skydoc will raise an error.')
+  parser.add_option('--overview', action='store_true',
+      help='Whether to generate an overview page')
+  parser.add_option('--overview_filename', default='index',
+      help='The file name to use for the overview page.')
+  parser.add_option('--link_ext', default='html',
+      help='The file extension used for links in the generated documentation')
+  parser.add_option('--site_root', default='',
+      help='The site root to be prepended to all URLs in the generated documentation')
   (options, args) = parser.parse_args(argv)
 
   if options.output_dir and options.output_file:
