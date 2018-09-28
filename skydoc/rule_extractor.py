@@ -82,6 +82,20 @@ class RuleDocExtractor(object):
     self.__extracted_rules = {}
     self.__load_symbols = []
 
+  def _exec_code(self, compiled, global_stubs):
+    """Executes compiled code with a copy of the global stubs.
+
+    This has to be extracted into a separate function in order to be compatible
+    with the exec statement in older Python versions, which otherwise throws a
+    syntax error: "unqualified exec is not allowed in function".
+
+    Returns:
+      The modified environment after the execution is finished.
+    """
+    env = global_stubs.copy()
+    exec(compiled, env)
+    return env
+
   def _process_skylark(self, bzl_file, load_symbols):
     """Evaluates the Skylark code in the .bzl file.
 
@@ -94,12 +108,10 @@ class RuleDocExtractor(object):
       load_symbols: List of load_extractor.LoadSymbol objects containing info
         about symbols load()ed from other .bzl files.
     """
-    compiled = None
     with open(bzl_file) as f:
       compiled = compile(f.read(), bzl_file, 'exec')
     global_stubs = create_stubs(SKYLARK_STUBS, load_symbols)
-    env = global_stubs.copy()
-    exec(compiled, env)
+    env = self._exec_code(compiled, global_stubs)
 
     new_globals = (
       defn for defn in env.items() if not defn[0] in global_stubs
@@ -197,7 +209,13 @@ class RuleDocExtractor(object):
       if rule_desc.example_doc:
         rule.example_documentation = rule_desc.example_doc
 
-      attrs = sorted(rule_desc.attrs.values(), key=functools.cmp_to_key(attr.attr_compare))
+      if hasattr(functools, 'cmp_to_key'):
+        # Python 2.7 and 3.x
+        attrs = sorted(rule_desc.attrs.values(), key=functools.cmp_to_key(attr.attr_compare))
+      else:
+        # Python <2.7
+        attrs = sorted(rule_desc.attrs.values(), cmp=attr.attr_compare)
+
       for attr_desc in attrs:
         if attr_desc.name.startswith("_"):
           continue
