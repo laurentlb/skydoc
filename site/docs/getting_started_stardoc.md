@@ -6,8 +6,9 @@ title: Getting started
 Stardoc is a documentation generator for [Bazel](https://bazel.build) build rules
 written in [Starlark](https://bazel.build/docs/skylark/index.html).
 
-Stardoc provides a Starlark rules (`stardoc`)
-that can be used to build documentation for Starlark rules in Markdown.
+Stardoc provides a Starlark rule (`stardoc`)
+that can be used to build Markdown documentation for Starlark rules, providers,
+and functions.
 Starlark generates one documentation page per `stardoc` target.
 
 If you are new to writing build rules for Bazel, please read the Bazel
@@ -35,7 +36,7 @@ git_repository(
 )
 ```
 
-Note that the `bazel_skylib` repository is also need to be loaded since Stardoc uses
+Note that the `bazel_skylib` repository must also be loaded since Stardoc uses
 this library.
 
 If you would like to load the `stardoc` rule by default using Bazel's prelude, add
