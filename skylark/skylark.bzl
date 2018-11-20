@@ -41,7 +41,7 @@ def _skylark_doc_impl(ctx):
     inputs = depset(order = "postorder", direct = direct, transitive = transitive + [
         dep[SkylarkLibraryInfo].transitive_srcs
         for dep in ctx.attr.deps
-    ])
+    ] + [skydoc])
     sources = [source.path for source in direct]
     flags = [
         "--format=%s" % ctx.attr.format,
@@ -59,8 +59,7 @@ def _skylark_doc_impl(ctx):
         flags += ["--site_root=%s" % ctx.attr.site_root]
     skydoc = _skydoc(ctx)
     ctx.actions.run(
-        inputs = inputs.to_list() + [skydoc],
-
+        inputs = inputs,
         executable = skydoc,
         arguments = flags + sources,
         outputs = [skylark_doc_zip],
