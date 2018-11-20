@@ -59,7 +59,8 @@ def _skylark_doc_impl(ctx):
         flags += ["--site_root=%s" % ctx.attr.site_root]
     skydoc = _skydoc(ctx)
     ctx.actions.run(
-        inputs = list(inputs) + [skydoc],
+        inputs = inputs.to_list() + [skydoc],
+
         executable = skydoc,
         arguments = flags + sources,
         outputs = [skylark_doc_zip],
