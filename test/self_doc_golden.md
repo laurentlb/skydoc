@@ -61,7 +61,7 @@ This rule is an experimental replacement for the existing skylark_doc rule.
         List of strings; optional
         <p>
           A list of canonical flags to affect Starlark semantics for the Starlark interpretter
-during documentatoin generation. This should only be used to maintain compatibility with
+during documentation generation. This should only be used to maintain compatibility with
 non-default semantic flags required to use the given Starlark symbols.
 <br><br>For example, if <code>//foo:bar.bzl</code> does not build except when a user would specify
 <code>--incompatible_foo_semantic=false</code>, then this attribute should contain
