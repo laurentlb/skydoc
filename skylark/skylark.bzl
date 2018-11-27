@@ -16,7 +16,7 @@
 
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-load("@bazel_skylib//:skylark_library.bzl", "SkylarkLibraryInfo")
+load("@bazel_skylib//:bzl_library.bzl", "StarlarkLibraryInfo")
 
 _SKYLARK_FILETYPE = [".bzl"]
 
@@ -34,13 +34,13 @@ def _skylark_doc_impl(ctx):
     transitive = []
     skydoc = _skydoc(ctx)
     for dep in ctx.attr.srcs:
-        if SkylarkLibraryInfo in dep:
-            direct.extend(dep[SkylarkLibraryInfo].srcs)
-            transitive.append(dep[SkylarkLibraryInfo].transitive_srcs)
+        if StarlarkLibraryInfo in dep:
+            direct.extend(dep[StarlarkLibraryInfo].srcs)
+            transitive.append(dep[StarlarkLibraryInfo].transitive_srcs)
         else:
             direct.extend(dep.files.to_list())
     inputs = depset(order = "postorder", direct = direct, transitive = transitive + [
-        dep[SkylarkLibraryInfo].transitive_srcs
+        dep[StarlarkLibraryInfo].transitive_srcs
         for dep in ctx.attr.deps
     ] + [depset([skydoc])])
     sources = [source.path for source in direct]
@@ -73,11 +73,11 @@ skylark_doc = rule(
     _skylark_doc_impl,
     attrs = {
         "srcs": attr.label_list(
-            providers = [SkylarkLibraryInfo],
+            providers = [StarlarkLibraryInfo],
             allow_files = _SKYLARK_FILETYPE,
         ),
         "deps": attr.label_list(
-            providers = [SkylarkLibraryInfo],
+            providers = [StarlarkLibraryInfo],
             allow_files = False,
         ),
         "format": attr.string(default = "markdown"),

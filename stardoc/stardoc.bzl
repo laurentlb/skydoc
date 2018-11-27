@@ -14,7 +14,7 @@
 
 """Starlark rule for stardoc: a documentation generator tool written in Java."""
 
-load("@bazel_skylib//:skylark_library.bzl", "SkylarkLibraryInfo")
+load("@bazel_skylib//:bzl_library.bzl", "StarlarkLibraryInfo")
 
 def _stardoc_impl(ctx):
     """Implementation of the stardoc rule."""
@@ -23,7 +23,7 @@ def _stardoc_impl(ctx):
         fail("semantic_flags entry '%s' must start with '--'" % semantic_flag)
     out_file = ctx.outputs.out
     input_files = depset(direct = [ctx.file.input], transitive = [
-        dep[SkylarkLibraryInfo].transitive_srcs
+        dep[StarlarkLibraryInfo].transitive_srcs
         for dep in ctx.attr.deps
     ])
     args = [
@@ -57,7 +57,7 @@ This rule is an experimental replacement for the existing skylark_doc rule.
         ),
         "deps": attr.label_list(
             doc = "A list of skylark_library dependencies which the input depends on.",
-            providers = [SkylarkLibraryInfo],
+            providers = [StarlarkLibraryInfo],
         ),
         "out": attr.output(
             doc = "The (markdown) file to which documentation will be output.",
